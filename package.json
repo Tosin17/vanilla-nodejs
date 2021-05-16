@@ -1,0 +1,20 @@
+{
+  "name": "vanilla-nodejs",
+  "version": "1.0.0",
+  "description": "Node internals, no packages. A nodejs CLI for improved schematics",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tosin17/vanilla-nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tosin17/vanilla-nodejs/issues"
+  },
+  "homepage": "https://github.com/Tosin17/vanilla-nodejs#readme"
+}
