@@ -1,7 +1,10 @@
 const http = require('http')
+const https = require('https')
 const url = require('url')
 const StringDecoder = require('string_decoder').StringDecoder;
 const config = require('../config');
+const fs = require('fs');
+const path = require('path')
 
 const handlers = {
     sample: (data, callback) => {
@@ -16,7 +19,22 @@ const router = {
     sample: handlers.sample
 }
 
-const server = http.createServer((req, res) => {
+const httpServer = http.createServer((req, res) => {
+    server(req, res);
+})
+
+const keyFullPath = path.join(__dirname, './https/key.pem');
+const certFullPath = path.join(__dirname, './https/cert.pem');
+
+const serverOpts = {
+    key: fs.readFileSync(keyFullPath),
+    cert: fs.readFileSync(certFullPath)
+}
+const httpsServer = https.createServer(serverOpts, (req, res) => {
+    server(req, res);
+})
+
+const server = (req, res) => {
     const parsedUrl = url.parse(req.url, true);
     const path = parsedUrl.pathname.replace(/^\/+|\/+$/g, '');
     const method = req.method.toUpperCase()
@@ -51,8 +69,12 @@ const server = http.createServer((req, res) => {
             res.end(payload)
         })
     })
+}
+
+httpServer.listen(config.httpPort, () => {
+    console.log(`Server Listening on ${config.envName}: ${config.httpPort}`);
 })
 
-server.listen(config.port, () => {
-    console.log(`Server Listening on ${config.envName}: ${config.port}`);
+httpsServer.listen(config.httpsPort, () => {
+    console.log(`Server Listening on ${config.envName}: ${config.httpsPort}`);
 })
