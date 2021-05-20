@@ -4,7 +4,12 @@ const url = require('url')
 const StringDecoder = require('string_decoder').StringDecoder;
 const config = require('../config');
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
+const _data = require('../lib/data');
+
+_data.create('test', 'newFile', { data: 'mockData' }, (err) => {
+    console.log(err);
+})
 
 const handlers = {
     sample: (data, callback) => {
