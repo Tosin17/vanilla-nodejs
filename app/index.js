@@ -1,6 +1,20 @@
 const http = require('http')
 const url = require('url')
 const StringDecoder = require('string_decoder').StringDecoder;
+const config = require('../config');
+
+const handlers = {
+    sample: (data, callback) => {
+        callback(406, { name: 'sample handler' })
+    },
+    notFound: (data, callback) => {
+        callback(404)
+    }
+}
+
+const router = {
+    sample: handlers.sample
+}
 
 const server = http.createServer((req, res) => {
     const parsedUrl = url.parse(req.url, true);
@@ -19,11 +33,26 @@ const server = http.createServer((req, res) => {
     req.on('end', _ => {
         buffer += decoder.end()
 
-        res.end('Hello World\n')
-    })
+        const chosenHandler = router[path] || handlers.notFound;
+        const data = {
+            path,
+            method,
+            queryStrObj,
+            headers,
+            payload: buffer
+        }
 
+        chosenHandler(data, (statusCode, payload) => {
+            statusCode = statusCode || 200;
+            payload = JSON.stringify(payload || {});
+
+            res.setHeader('Content-Type', 'application/json');
+            res.writeHead(statusCode);
+            res.end(payload)
+        })
+    })
 })
 
-server.listen(3000, () => {
-    console.log('Server Listening');
+server.listen(config.port, () => {
+    console.log(`Server Listening on ${config.envName}: ${config.port}`);
 })
