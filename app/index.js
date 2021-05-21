@@ -5,17 +5,9 @@ const StringDecoder = require('string_decoder').StringDecoder;
 const config = require('../config');
 const fs = require('fs');
 const path = require('path');
+const handlers = require('../lib/handlers');
 const _data = require('../lib/data');
 
-
-const handlers = {
-    sample: (data, callback) => {
-        callback(406, { name: 'sample handler' })
-    },
-    notFound: (data, callback) => {
-        callback(404)
-    }
-}
 
 const router = {
     sample: handlers.sample
