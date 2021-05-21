@@ -2,15 +2,15 @@ const http = require('http')
 const https = require('https')
 const url = require('url')
 const StringDecoder = require('string_decoder').StringDecoder;
-const config = require('../config');
+const config = require('../lib/config');
 const fs = require('fs');
 const path = require('path');
 const handlers = require('../lib/handlers');
 const _data = require('../lib/data');
 
-
 const router = {
-    sample: handlers.sample
+    health: handlers.health,
+    users: handlers.users
 }
 
 const httpServer = http.createServer((req, res) => {
