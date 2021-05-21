@@ -7,9 +7,6 @@ const fs = require('fs');
 const path = require('path');
 const _data = require('../lib/data');
 
-_data.create('test', 'newFile', { data: 'mockData' }, (err) => {
-    console.log(err);
-})
 
 const handlers = {
     sample: (data, callback) => {
